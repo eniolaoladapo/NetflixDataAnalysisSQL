@@ -74,7 +74,6 @@ GROUP BY type
 **Objective:** Identify the top 5 countries with the highest number of content items.
 
 
-
 ### 5.	Find Content Added in the Last 5 Years
 
   ```sql
@@ -94,14 +93,14 @@ GROUP BY type
 	--Method 1
 
 	SELECT * FROM netflix_titles
-	WHERE Type = 'Movie' AND Listed_in LIKE '%Documentaries%'
+		WHERE Type = 'Movie' AND Listed_in LIKE '%Documentaries%'
  
 	--Method 2
 
 	SELECT ntf.*, nli.listed_in 
-	FROM netflix_titles ntf
+		FROM netflix_titles ntf
 	JOIN netflix_listed_in nli
-	ON ntf.show_id = nli.show_id
+		ON ntf.show_id = nli.show_id
 	WHERE nli.Listed_in = 'Documentaries'
 	SELECT * FROM netflix_listed_in
   ```
@@ -114,13 +113,13 @@ GROUP BY type
  ```sql
 	--Method 1
 	SELECT * FROM netflix_titles
-	WHERE director = 'NA'
+		WHERE director = 'NA'
 
 	--Method 2
 	SELECT ntf.*, nd.director 
-	FROM netflix_titles ntf
+		FROM netflix_titles ntf
 	JOIN netflix_director nd
-	ON ntf.show_id = nd.show_id
+		ON ntf.show_id = nd.show_id
 	WHERE nd.director = 'NA'
    ```
  **Objective:**  Listing All Movies that are Documentaries
@@ -138,18 +137,19 @@ GROUP BY type
 	JOIN netflix_cast nc
 	ON ntf.show_id = nc.show_id
 	WHERE nc.cast = 'Salman Khan' AND  ntf.release_year > YEAR(GetDate()) - 10
- 
+   ```
+ **Objective:**
  
  
 ### 9.	Find the Top 10 Actors Who Have Appeared in the Highest Number of Movies Produced in India
   ```sql
 	--Method 1
 	SELECT TOP (10)
-	Trim(Value) AS Actor,
+		Trim(Value) AS Actor,
 	COUNT(*) HighestNumber
-	FROM netflix_titles
+		FROM netflix_titles
 	CROSS APPLY STRING_SPLIT(cast,',')
-	WHERE country LIKE '%India%' AND type = 'Movie'
+		WHERE country LIKE '%India%' AND type = 'Movie'
 	GROUP BY Trim(Value)
 	Order BY COUNT(*) DESC
  
@@ -161,6 +161,8 @@ GROUP BY type
 	WHERE ntf.country = 'India' AND ntf.type = 'Movie'
 	GROUP BY trim(cast)
 	Order BY COUNT(*) DESC
+   ```
+ **Objective:**
  
  
 ### 10.	Categorize the content based on the presence of the keywords 'kill' and 'violence' in the description field. Label content containing these keywords as 'Bad' and all other content as 'Good'. Count how many items fall into each category.
@@ -193,13 +195,13 @@ GROUP BY type
 	WHEN description LIKE '%kill%' OR description LIKE '%violence%' THEN 'Bad'
 	ELSE 'Good'
 	END;
- 
- 
+   ```
+ **Objective:**
  
  
 ### 11.	Identify the Longest Movie
-
-	-- Our strint_split has another parameter called the ORDINAL VALUE. That when you use string_split, it will split the value of the column and return the first value as Ordinal 1, means the first value and not the second value. ORDINAL is like the index of the numbering. We CAST the Value because we need the answer as INTEGER.
+   ```sql
+	--Our strint_split has another parameter called the ORDINAL VALUE. That when you use string_split, it will split the value of the column and return the first value as Ordinal 1, means the first value and not the second value. ORDINAL is like the index of the numbering. We CAST the Value because we need the answer as INTEGER.
  
 	SELECT TOP 1
 
@@ -218,11 +220,11 @@ GROUP BY type
 	WHERE type = 'Movie' AND ORDINAL = 1
 
 	ORDER BY CAST(Trim(Value) AS INT) DESC
- 
- 
+  **Objective:**
+   ```
  
 ### 12.	Find All Movies/TV Shows by Director 'Rajiv Chilaka'
-
+   ```sql
 	--Method 1
 
 	SELECT * FROM netflix_titles
@@ -248,10 +250,10 @@ GROUP BY type
 	ON ntf.show_id = nd.show_id
 
 	WHERE ntf.Type = 'Movie' AND nd.Director = 'Rajiv Chilaka'
- 
+   ```
  
 ### 13.	List All TV Shows with More Than 5 Seasons
- 
+    ```sql
 	SELECT
 
 	Title,
@@ -269,26 +271,26 @@ GROUP BY type
 	AND TRY_CAST(TRIM(Value) AS INT) > 5
 
 	Order By CAST(TRIM(Value) AS INT) DESC
- 
+    ```
  
  
  
 ### 14.	List content items added after August 20, 2021
- 
+    ```sql
 	SELECT * FROM Netflix_Titles
 
 	WHERE date_added > '2021-08-20'
- 
+    ```
  
 ### 15.	List movies added to on June 15, 2019
-
+   ```sql
 	SELECT * FROM Netflix_Titles
 
 	WHERE type = 'Movie' AND date_added = '2019-06-15'
- 
+    ```
  
 ### 16.	List content items added in 2021
-
+   ```sql
 	--Method 1
 
 	SELECT * FROM Netflix_Titles
@@ -316,9 +318,9 @@ GROUP BY type
 
 	SELECT * from netflix_titles where Year(date_added) = 2021
  
- 
+    ```
 ### 17.	List movies added in 2021
-
+   ```sql
 	--Method 1
 
 	SELECT * FROM Netflix_Titles
@@ -351,10 +353,10 @@ GROUP BY type
 
 	Where type = 'Movie' AND Year(date_added) = 2021
  
- 
+    ```
  
 ### 18.	Count the number of movies and tv series that each director has produced in different columns.
-
+   ```sql
 	SELECT Trim(value) AS Directors, Type, Count(*) MovieANDTVShow  
 
 	FROM Netflix_Titles
@@ -364,12 +366,12 @@ GROUP BY type
 	WHERE type IN('Movie', 'TV Show') AND Director <> 'NA' 
 
 	GROUP BY Trim(value), Type
- 
+    ```
  
  
  
 ### 19.	Which country has highest number of comedy movies?
- 
+    ```sql
 	SELECT TOP 1 Trim(value) All_Country, Count(*) COMEDIES
 
 	FROM Netflix_Titles
@@ -381,11 +383,11 @@ GROUP BY type
 	GROUP BY Trim(value)
 
 	ORDER BY Count(*) DESC
- 
+    ```
  
  
 ### 20.	For each year, which director has maximum number of movies released
- 
+    ```sql
 	SELECT release_year, Trim(value) DIRECTOR, Count(*) MOVIES
 
 	FROM Netflix_Titles
@@ -398,11 +400,11 @@ GROUP BY type
 
 	ORDER BY Count(*) DESC
  
- 
+    ```
  
  
 ### 21.	What is the average running length of movies in each genre?
- 
+    ```sql
 	SELECT Type, Title, Trim(value) as AVGERAGELEN
 
 	FROM netflix_titles
@@ -410,12 +412,12 @@ GROUP BY type
 	CROSS APPLY string_split(Duration, ' ', 1)
 
 	WHERE type = 'Movie' and Ordinal = 1
-
+   ```
  
  
  
 ### 22.	List directors who have directed both comedies and horror films.
- 
+    ```sql
 	SELECT DISTINCT Director, Trim(value) as ComedyAndHorror
 
 	FROM Netflix_Titles
@@ -427,11 +429,11 @@ GROUP BY type
 	GROUP BY Trim(value), Director
 
 	HAVING Trim(value) <> 'Independent Movies' AND Trim(value) <> 'Sci-Fi & Fantasy' AND Trim(value) <> 'International Movies' AND Trim(value) <> 'Action & Adventure' AND Trim(value) <> 'Cult Movies'
- 
+    ```
  
  
 ### 23.	List the director's name and the number of horror and comedy films that he or she has directed.
-
+   ```sql
 	SELECT Director, Count(*) MovieNumbers, Trim(value) as ComedyAndHorror
 
 	FROM Netflix_Titles
@@ -445,11 +447,11 @@ GROUP BY type
 	HAVING Trim(value) <> 'Independent Movies' AND Trim(value) <> 'Sci-Fi & Fantasy' AND Trim(value) <> 'International Movies' AND Trim(value) <> 'Action & Adventure' AND Trim(value) <> 'Cult Movies'
 
 	ORDER BY Count(*) DESC
- 
+    ```
  
  
 ### 24.	Find the Most Common Rating for Movies and TV Shows
- 
+    ```sql
 	SELECT Rating, COUNT(*) AS CountRating
 
 	FROM (
@@ -469,11 +471,11 @@ GROUP BY type
 	GROUP BY Rating
 	ORDER BY COUNT(*) DESC
  
- 
+    ```
  
  
 ### 25.	Find each year and the average numbers of content release in India on netflix and return top 5 year with highest avg content release!
- 
+    ```sql
  
 	SELECT TOP 5 release_year, COUNT(show_id) AS total_release, 
 
@@ -496,6 +498,6 @@ GROUP BY type
 	release_year
 	ORDER BY 
 	avg_release DESC
- 
+     ```
 
 
