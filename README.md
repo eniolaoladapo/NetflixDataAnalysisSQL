@@ -67,7 +67,8 @@ FROM
 	FROM netflix_titles
 	   CROSS APPLY string_split (country, ',') 
 	GROUP BY Trim(Value)
-) AS temp
+)
+AS temp
 	WHERE country IS NOT NULL
 	ORDER BY total_content DESC
 ```
