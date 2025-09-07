@@ -17,7 +17,17 @@ This project requires a thorough examination of Netflix's movie and TV show data
  
 ## Dataset
  
-Though the dataset for this project is sourced from the Kaggle dataset, but its uploaded here: Netflix_titles.csv
+Though the dataset for this project is sourced from the Kaggle dataset, but its uploaded here: This site was built using [Netflix_titles.csv](https://greaterheight.academy/NetflixContent.csv).
+
+
+## Get dataset, Create Database & Table
+
+**Step 1:** Download the dataset from: [Netflix Dataset](https://greaterheight.academy/NetflixContent.csv).
+
+
+**Step 2:** Open the NetflixContent.csv file and explore it to determine the column names.
+
+**Step 3:** Execute the SQL code below:
  
  
 ## Business Problems and Solutions
